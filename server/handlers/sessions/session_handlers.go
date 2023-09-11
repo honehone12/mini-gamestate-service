@@ -2,6 +2,7 @@ package sessions
 
 import (
 	"errors"
+	"mini-gamestate-service/db/controller"
 	"mini-gamestate-service/server/context"
 	"mini-gamestate-service/server/quick"
 	"net/http"
@@ -12,8 +13,8 @@ import (
 )
 
 type SessionForm struct {
-	UserUuid         string `form:"uuid" validate:"required,alphanum,min=36,max=36"`
-	OneTimeSessionId string `form:"id" validate:"required,alphanum,min=44,max=44"`
+	UserUuid         string `form:"uuid" validate:"required,uuid4,min=36,max=36"`
+	OneTimeSessionId string `form:"id" validate:"required,base64,min=44,max=44"`
 }
 
 var (
@@ -46,7 +47,11 @@ func Verify(c echo.Context) error {
 
 	ctrl := c.(*context.Context).Session()
 	s, err := ctrl.Get(formData.UserUuid)
-	if err != nil {
+	if err == controller.ErrorFieldNotFound {
+		c.Logger().Warn(err)
+		return quick.BadRequest()
+
+	} else if err != nil {
 		c.Logger().Error(err)
 		return quick.ServiceError()
 	}
