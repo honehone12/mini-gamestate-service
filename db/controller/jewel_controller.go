@@ -40,7 +40,7 @@ func (c JewelController) IncrBy(
 	defer cancel()
 
 	n, err := c.Get(userUuid, color)
-	if err != nil {
+	if !rueidis.IsRedisNil(err) && err != nil {
 		return err
 	}
 	if incr < 0 && n < (incr*-1) {
