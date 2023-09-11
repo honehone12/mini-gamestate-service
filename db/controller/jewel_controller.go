@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"mini-gamestate-service/db/models"
-	"mini-gamestate-service/db/models/jewels"
+	"mini-gamestate-service/db/models/colors"
 	"strconv"
 	"time"
 
@@ -33,7 +33,7 @@ func NewJewelController(kv rueidis.Client, timeOut time.Duration) JewelControlle
 
 func (c JewelController) IncrBy(
 	userUuid string,
-	color jewels.ColorCode,
+	color colors.ColorCode,
 	incr int64,
 ) error {
 	ctx, cancel := context.WithTimeout(context.Background(), c.timeOut)
@@ -61,7 +61,7 @@ func (c JewelController) IncrBy(
 	return nil
 }
 
-func (c JewelController) Get(userUuid string, color jewels.ColorCode) (int64, error) {
+func (c JewelController) Get(userUuid string, color colors.ColorCode) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), c.timeOut)
 	defer cancel()
 
@@ -89,11 +89,11 @@ func (c JewelController) SetAll(userUuid string, j *models.Jewel) error {
 	key := userUuid + jewelKeyExtension
 	base := 10
 	setAll := c.kv.B().Hmset().Key(key).FieldValue().
-		FieldValue(jewels.RedField, strconv.FormatInt(j.Red, base)).
-		FieldValue(jewels.BlueField, strconv.FormatInt(j.Blue, base)).
-		FieldValue(jewels.GreenField, strconv.FormatInt(j.Green, base)).
-		FieldValue(jewels.YellowField, strconv.FormatInt(j.Yellow, base)).
-		FieldValue(jewels.BlackField, strconv.FormatInt(j.Black, base)).
+		FieldValue(colors.RedField, strconv.FormatInt(j.Red, base)).
+		FieldValue(colors.BlueField, strconv.FormatInt(j.Blue, base)).
+		FieldValue(colors.GreenField, strconv.FormatInt(j.Green, base)).
+		FieldValue(colors.YellowField, strconv.FormatInt(j.Yellow, base)).
+		FieldValue(colors.BlackField, strconv.FormatInt(j.Black, base)).
 		Build()
 	res := c.kv.Do(ctx, setAll)
 	if res.Error() != nil {

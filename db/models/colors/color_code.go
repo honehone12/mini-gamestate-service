@@ -1,4 +1,4 @@
-package jewels
+package colors
 
 import "errors"
 

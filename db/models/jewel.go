@@ -1,6 +1,6 @@
 package models
 
-import "mini-gamestate-service/db/models/jewels"
+import "mini-gamestate-service/db/models/colors"
 
 type Jewel struct {
 	Red    int64 `json:"red"`
@@ -11,23 +11,23 @@ type Jewel struct {
 }
 
 func NewJewelFromMap(m map[string]int64) *Jewel {
-	red, ok := m[jewels.RedField]
+	red, ok := m[colors.RedField]
 	if !ok {
 		red = 0
 	}
-	blue, ok := m[jewels.BlueField]
+	blue, ok := m[colors.BlueField]
 	if !ok {
 		blue = 0
 	}
-	green, ok := m[jewels.GreenField]
+	green, ok := m[colors.GreenField]
 	if !ok {
 		green = 0
 	}
-	yellow, ok := m[jewels.YellowField]
+	yellow, ok := m[colors.YellowField]
 	if !ok {
 		yellow = 0
 	}
-	black, ok := m[jewels.BlackField]
+	black, ok := m[colors.BlackField]
 	if !ok {
 		black = 0
 	}
