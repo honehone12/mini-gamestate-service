@@ -43,7 +43,7 @@ func (c JewelController) IncrBy(
 	if !rueidis.IsRedisNil(err) && err != nil {
 		return err
 	}
-	if incr < 0 && n < (incr*-1) {
+	if (n + incr) < 0 {
 		return ErrorResultNotSignedInteger
 	}
 
