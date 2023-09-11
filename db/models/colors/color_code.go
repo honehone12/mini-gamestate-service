@@ -5,7 +5,7 @@ import "errors"
 type ColorCode byte
 
 const (
-	Red ColorCode = iota
+	Red ColorCode = 1 + iota
 	Blue
 	Green
 	Yellow

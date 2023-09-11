@@ -22,7 +22,7 @@ type ParamsOneColor struct {
 type ParamsIncr struct {
 	UserUuid  string           `form:"uuid" validate:"required,uuid4,min=36,max=36"`
 	ColorCode colors.ColorCode `form:"color" validate:"required,min=0,max=99"`
-	Incr      int64            `form:"incr" validate:"required,min=-99,max99"`
+	Incr      int64            `form:"incr" validate:"required,min=-99,max=99"`
 }
 
 func Initialize(c echo.Context) error {

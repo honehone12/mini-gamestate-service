@@ -16,7 +16,7 @@ const (
 )
 
 var (
-	ErrorValueNotSignedInteger = errors.New("the value is not expected to be smaller than 0")
+	ErrorResultNotSignedInteger = errors.New("the value is not expected to be smaller than 0")
 )
 
 type JewelController struct {
@@ -43,8 +43,8 @@ func (c JewelController) IncrBy(
 	if err != nil {
 		return err
 	}
-	if incr < 0 && n < incr {
-		return ErrorValueNotSignedInteger
+	if incr < 0 && n < (incr*-1) {
+		return ErrorResultNotSignedInteger
 	}
 
 	field, err := color.ColorCodeToString()
