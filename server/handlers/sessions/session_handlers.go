@@ -14,7 +14,7 @@ import (
 
 type SessionForm struct {
 	UserUuid         string `form:"uuid" validate:"required,uuid4,min=36,max=36"`
-	OneTimeSessionId string `form:"id" validate:"required,base64,min=44,max=44"`
+	OneTimeSessionId string `form:"id" validate:"required,base64url,min=44,max=44"`
 }
 
 var (
