@@ -25,6 +25,14 @@ type ParamsIncr struct {
 	Incr      int64            `form:"incr" validate:"required,min=-99,max=99"`
 }
 
+type JewelResponse struct {
+	Red    int64
+	Blue   int64
+	Green  int64
+	Yellow int64
+	Black  int64
+}
+
 func Initialize(c echo.Context) error {
 	formData := &ParamUserOnly{}
 	if err := quick.ProcessFormData(c, formData); err != nil {
@@ -61,7 +69,13 @@ func GetAll(c echo.Context) error {
 		return quick.ServiceError()
 	}
 
-	return c.JSON(http.StatusOK, j)
+	return c.JSON(http.StatusOK, JewelResponse{
+		Red:    j.Red,
+		Blue:   j.Blue,
+		Green:  j.Green,
+		Yellow: j.Yellow,
+		Black:  j.Black,
+	})
 }
 
 func Incr(c echo.Context) error {
