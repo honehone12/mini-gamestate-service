@@ -68,5 +68,11 @@ func Verify(c echo.Context) error {
 		return quick.BadRequest()
 	}
 
+	// consume id
+	if err := ctrl.Set(formData.UserUuid, ""); err != nil {
+		c.Logger().Warn(err)
+		return quick.ServiceError()
+	}
+
 	return c.NoContent(http.StatusOK)
 }
