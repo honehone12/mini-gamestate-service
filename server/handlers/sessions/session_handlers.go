@@ -17,9 +17,15 @@ type SessionForm struct {
 	OneTimeSessionId string `form:"id" validate:"required,base64url,min=44,max=44"`
 }
 
+const (
+	UuidStringLen      = 36
+	OneTimeIdStringLen = 44
+)
+
 var (
-	ErrorOnetimeIdExpired = errors.New("onetime id is expired")
-	ErrorInvalidOneTimeId = errors.New("onetime id is invalid")
+	ErrorOnetimeIdExpired         = errors.New("onetime id is expired")
+	ErrorInvalidOneTimeId         = errors.New("onetime id is invalid")
+	ErrorOnetimeIdAlreadyConsumed = errors.New("onetime id is already consumed")
 )
 
 func Set(c echo.Context) error {
@@ -54,6 +60,11 @@ func Verify(c echo.Context) error {
 	} else if err != nil {
 		c.Logger().Error(err)
 		return quick.ServiceError()
+	}
+
+	if len(s.OneTimeId) != OneTimeIdStringLen {
+		c.Logger().Warn(ErrorOnetimeIdAlreadyConsumed)
+		return quick.BadRequest()
 	}
 
 	expiration := s.CreatedAtUnix + 60*60
